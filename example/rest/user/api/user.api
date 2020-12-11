@@ -43,6 +43,7 @@ service user-api {
 }
 
 @server(
+	prefix: /
 	jwt: Auth
 	middleware: UserCheck
 )

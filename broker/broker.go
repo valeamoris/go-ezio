@@ -1,7 +1,5 @@
 package broker
 
-import "github.com/valeamoris/go-ezio/broker/rabbitmq"
-
 type (
 	Broker interface {
 		Init(...Option) error
@@ -33,8 +31,4 @@ type (
 	}
 
 	Handler func(Event) error
-)
-
-var (
-	DefaultBroker = rabbitmq.NewBroker()
 )

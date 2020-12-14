@@ -6,6 +6,7 @@ import (
 	"github.com/tal-tech/go-zero/core/logx"
 	"github.com/tal-tech/go-zero/rest"
 	"github.com/valeamoris/go-ezio/broker"
+	"github.com/valeamoris/go-ezio/broker/rabbitmq"
 	"log"
 	"net/http"
 )
@@ -45,7 +46,7 @@ func NewServer(c rest.RestConf, opts ...RunOption) (*Server, error) {
 
 	server := &Server{
 		engine: newEngine(c),
-		broker: broker.DefaultBroker,
+		broker: rabbitmq.NewBroker(),
 		opts: runOptions{
 			start: func(srv *engine) error {
 				return srv.Start()

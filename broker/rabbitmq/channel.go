@@ -33,7 +33,7 @@ func (r *rabbitMQChannel) Connect(prefetchCount int, prefetchGlobal bool) error 
 	if err != nil {
 		return err
 	}
-	err = r.channel.Qos(prefetchCount, 9, prefetchGlobal)
+	err = r.channel.Qos(prefetchCount, 0, prefetchGlobal)
 	if err != nil {
 		return err
 	}

@@ -5,8 +5,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/tal-tech/go-zero/core/logx"
 	"github.com/tal-tech/go-zero/rest"
-	"github.com/valeamoris/go-ezio/broker"
-	"github.com/valeamoris/go-ezio/broker/rabbitmq"
 	"log"
 	"net/http"
 )
@@ -21,7 +19,6 @@ type (
 
 	Server struct {
 		engine *engine
-		broker broker.Broker
 		opts   runOptions
 	}
 )
@@ -46,7 +43,6 @@ func NewServer(c rest.RestConf, opts ...RunOption) (*Server, error) {
 
 	server := &Server{
 		engine: newEngine(c),
-		broker: rabbitmq.NewBroker(),
 		opts: runOptions{
 			start: func(srv *engine) error {
 				return srv.Start()
@@ -62,10 +58,6 @@ func NewServer(c rest.RestConf, opts ...RunOption) (*Server, error) {
 	}
 
 	return server, nil
-}
-
-func (e *Server) Broker() broker.Broker {
-	return e.broker
 }
 
 func (e *Server) Start() {

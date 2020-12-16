@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"context"
 	"errors"
 	"github.com/labstack/echo/v4"
 	"github.com/tal-tech/go-zero/core/logx"
@@ -62,6 +63,11 @@ func NewServer(c rest.RestConf, opts ...RunOption) (*Server, error) {
 
 func (e *Server) Start() {
 	handlerError(e.opts.start(e.engine))
+}
+
+// graceful shutdown
+func (e *Server) Shutdown(ctx context.Context) error {
+	return e.engine.Shutdown(ctx)
 }
 
 func (e *Server) Stop() {

@@ -38,9 +38,7 @@ type (
 		brk  breaker.Breaker
 	}
 
-	Node interface {
-		red.Cmdable
-	}
+	Node = red.UniversalClient
 
 	// GeoLocation is used with GeoAdd to add geospatial location.
 	GeoLocation = red.GeoLocation

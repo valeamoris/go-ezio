@@ -97,25 +97,6 @@ func getRedis(r *Redis) (Node, error) {
 	}
 }
 
-func toPairs(vals []red.Z) []Pair {
-	pairs := make([]Pair, len(vals))
-	for i, val := range vals {
-		switch member := val.Member.(type) {
-		case string:
-			pairs[i] = Pair{
-				Key:   member,
-				Score: int64(val.Score),
-			}
-		default:
-			pairs[i] = Pair{
-				Key:   mapping.Repr(val.Member),
-				Score: int64(val.Score),
-			}
-		}
-	}
-	return pairs
-}
-
 func toStrings(vals []interface{}) []string {
 	ret := make([]string, len(vals))
 	for i, val := range vals {

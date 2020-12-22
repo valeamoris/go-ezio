@@ -647,29 +647,6 @@ func TestRedisScriptLoad(t *testing.T) {
 	})
 }
 
-func TestRedisToPairs(t *testing.T) {
-	pairs := toPairs([]red.Z{
-		{
-			Member: 1,
-			Score:  1,
-		},
-		{
-			Member: 2,
-			Score:  2,
-		},
-	})
-	assert.EqualValues(t, []Pair{
-		{
-			Key:   "1",
-			Score: 1,
-		},
-		{
-			Key:   "2",
-			Score: 2,
-		},
-	}, pairs)
-}
-
 func TestRedisToStrings(t *testing.T) {
 	vals := toStrings([]interface{}{1, 2})
 	assert.EqualValues(t, []string{"1", "2"}, vals)

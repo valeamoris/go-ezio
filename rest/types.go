@@ -15,10 +15,12 @@ type (
 
 	RouteOption func(r *Group)
 
+	HandlerFunc = echo.HandlerFunc
+
 	Route struct {
 		Method  string
 		Path    string
-		Handler echo.HandlerFunc
+		Handler HandlerFunc
 	}
 
 	Group struct {

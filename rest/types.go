@@ -1,12 +1,16 @@
 package rest
 
-import "github.com/labstack/echo/v4"
+import (
+	"github.com/dgrijalva/jwt-go"
+	"github.com/labstack/echo/v4"
+)
 
 type (
 	jwtSetting struct {
 		enabled    bool
 		secret     string
 		prevSecret string
+		claims     jwt.Claims
 	}
 
 	RouteOption func(r *Group)

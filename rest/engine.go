@@ -57,7 +57,10 @@ func (s *engine) bindGroup(g Group, metrics *stat.Metrics) error {
 
 	// JWT的认证中间件
 	if g.jwt.enabled {
-		group.Use(echoMiddleware.JWT([]byte(g.jwt.secret)))
+		conf := echoMiddleware.DefaultJWTConfig
+		conf.Claims = g.jwt.claims
+		conf.SigningKey = []byte(g.jwt.secret)
+		group.Use(echoMiddleware.JWTWithConfig(conf))
 	}
 
 	for _, m := range g.middlewares {

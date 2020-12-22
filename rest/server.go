@@ -2,6 +2,7 @@ package rest
 
 import (
 	"context"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 	"github.com/tal-tech/go-zero/core/logx"
 	"github.com/tal-tech/go-zero/rest"
@@ -106,11 +107,12 @@ func handlerError(err error) {
 }
 
 // 校验Jwt
-func WithJwt(secret string) RouteOption {
+func WithJwt(secret string, claims jwt.Claims) RouteOption {
 	return func(r *Group) {
 		validateSecret(secret)
 		r.jwt.enabled = true
 		r.jwt.secret = secret
+		r.jwt.claims = claims
 	}
 }
 

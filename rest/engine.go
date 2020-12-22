@@ -52,10 +52,6 @@ func (s *engine) bindGroup(g Group, metrics *stat.Metrics) error {
 	s.signatureVerifier()
 
 	group := s.Group(g.Prefix)
-	for _, m := range g.middlewares {
-		group.Use(echo.MiddlewareFunc(m))
-	}
-
 	// 自定义负载保护
 	group.Use(middleware.SheddingMiddleware(s.getShedder(g.priority), metrics))
 
@@ -63,6 +59,11 @@ func (s *engine) bindGroup(g Group, metrics *stat.Metrics) error {
 	if g.jwt.enabled {
 		group.Use(echoMiddleware.JWT([]byte(g.jwt.secret)))
 	}
+
+	for _, m := range g.middlewares {
+		group.Use(echo.MiddlewareFunc(m))
+	}
+
 	for _, route := range g.Routes {
 		s.bindRoute(group, metrics, route)
 	}

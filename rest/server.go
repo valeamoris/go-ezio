@@ -68,6 +68,12 @@ func WithValidator(validator echo.Validator) RunOption {
 	}
 }
 
+func WithErrorHandler(errHandler func(err error, ctx echo.Context)) RunOption {
+	return func(srv *Server) {
+		srv.engine.HTTPErrorHandler = errHandler
+	}
+}
+
 func (e *Server) Start() {
 	handlerError(e.opts.start(e.engine))
 }

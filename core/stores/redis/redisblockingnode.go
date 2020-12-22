@@ -6,11 +6,6 @@ import (
 	red "github.com/go-redis/redis/v8"
 )
 
-type ClosableNode interface {
-	Node
-	Close()
-}
-
 func CreateBlockingNode(r *Redis) (red.UniversalClient, error) {
 	timeout := readWriteTimeout + blockingQueryTimeout
 

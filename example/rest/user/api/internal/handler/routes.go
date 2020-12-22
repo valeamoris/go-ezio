@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/dgrijalva/jwt-go"
 	"github.com/valeamoris/go-ezio/rest"
 	"net/http"
 
@@ -45,6 +46,6 @@ func RegisterHandlers(engine *rest.Server, serverCtx *svc.ServiceContext) {
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.UserCheck}...,
 		),
-		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret, jwt.MapClaims{}),
 	)
 }

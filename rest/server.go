@@ -2,7 +2,6 @@ package rest
 
 import (
 	"context"
-	"errors"
 	"github.com/labstack/echo/v4"
 	"github.com/tal-tech/go-zero/core/logx"
 	"github.com/tal-tech/go-zero/rest"
@@ -34,10 +33,6 @@ func MustNewServer(c rest.RestConf, opts ...RunOption) *Server {
 }
 
 func NewServer(c rest.RestConf, opts ...RunOption) (*Server, error) {
-	if len(opts) > 1 {
-		return nil, errors.New("only one RunOption is allowed")
-	}
-
 	if err := c.SetUp(); err != nil {
 		return nil, err
 	}

@@ -64,7 +64,9 @@ func (s *engine) bindGroup(g Group, metrics *stat.Metrics) error {
 	}
 
 	for _, m := range g.middlewares {
-		group.Use(echo.MiddlewareFunc(m))
+		group.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+			return echo.HandlerFunc(m(HandlerFunc(next)))
+		})
 	}
 
 	for _, route := range g.Routes {
@@ -81,7 +83,7 @@ func (s *engine) getShedder(priority bool) load.Shedder {
 }
 
 func (s *engine) bindRoute(g *echo.Group, metrics *stat.Metrics, route Route) {
-	g.Add(route.Method, route.Path, route.Handler,
+	g.Add(route.Method, route.Path, echo.HandlerFunc(route.Handler),
 		// 断路器
 		middleware.BreakerMiddleware(route.Method, route.Path, metrics),
 	)

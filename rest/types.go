@@ -15,7 +15,7 @@ type (
 
 	RouteOption func(r *Group)
 
-	HandlerFunc = echo.HandlerFunc
+	HandlerFunc func(ctx Context) error
 
 	Route struct {
 		Method  string
@@ -36,5 +36,7 @@ type (
 
 	Context = echo.Context
 
-	Middleware echo.MiddlewareFunc
+	MiddlewareFunc = func(next HandlerFunc) HandlerFunc
+
+	Middleware = MiddlewareFunc
 )

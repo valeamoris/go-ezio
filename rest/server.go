@@ -97,7 +97,9 @@ func (e *Server) Group(g Group, opts ...RouteOption) {
 
 func (e *Server) Use(middlewares ...Middleware) {
 	for _, m := range middlewares {
-		e.engine.Use(echo.MiddlewareFunc(m))
+		e.engine.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+			return echo.HandlerFunc(m(HandlerFunc(next)))
+		})
 	}
 }
 

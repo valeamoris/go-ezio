@@ -55,7 +55,7 @@ type (
 	FloatCmd = red.FloatCmd
 )
 
-func NewRedis(redisAddr, redisType string, redisPass ...string) (Node, error) {
+func NewRedis(redisAddr, redisType string, redisPass ...string) (red.UniversalClient, error) {
 	var pass string
 	for _, v := range redisPass {
 		pass = v
@@ -86,7 +86,7 @@ func acceptable(err error) bool {
 	return err == nil || err == red.Nil
 }
 
-func getRedis(r *Redis) (Node, error) {
+func getRedis(r *Redis) (red.UniversalClient, error) {
 	switch r.Type {
 	case ClusterType:
 		return getCluster(r.Addr, r.Pass, r.brk)

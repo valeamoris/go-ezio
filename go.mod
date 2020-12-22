@@ -6,7 +6,6 @@ require (
 	github.com/HdrHistogram/hdrhistogram-go v1.0.1 // indirect
 	github.com/alicebob/miniredis/v2 v2.14.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/go-redis/redis v6.15.7+incompatible
 	github.com/go-redis/redis/v8 v8.4.4
 	github.com/google/uuid v1.1.1
 	github.com/labstack/echo/v4 v4.1.17

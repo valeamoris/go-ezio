@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	red "github.com/go-redis/redis/v8"
-	"github.com/tal-tech/go-zero/core/logx"
 )
 
 type ClosableNode interface {
@@ -12,7 +11,7 @@ type ClosableNode interface {
 	Close()
 }
 
-func CreateBlockingNode(r *Redis) (ClosableNode, error) {
+func CreateBlockingNode(r *Redis) (red.UniversalClient, error) {
 	timeout := readWriteTimeout + blockingQueryTimeout
 
 	switch r.Type {
@@ -26,7 +25,7 @@ func CreateBlockingNode(r *Redis) (ClosableNode, error) {
 			MinIdleConns: 1,
 			ReadTimeout:  timeout,
 		})
-		return &clientBridge{client}, nil
+		return client, nil
 	case ClusterType:
 		client := red.NewClusterClient(&red.ClusterOptions{
 			Addrs:        []string{r.Addr},
@@ -36,30 +35,8 @@ func CreateBlockingNode(r *Redis) (ClosableNode, error) {
 			MinIdleConns: 1,
 			ReadTimeout:  timeout,
 		})
-		return &clusterBridge{client}, nil
+		return client, nil
 	default:
 		return nil, fmt.Errorf("unknown redis type: %s", r.Type)
-	}
-}
-
-type (
-	clientBridge struct {
-		*red.Client
-	}
-
-	clusterBridge struct {
-		*red.ClusterClient
-	}
-)
-
-func (bridge *clientBridge) Close() {
-	if err := bridge.Client.Close(); err != nil {
-		logx.Errorf("Error occurred on close redis client: %s", err)
-	}
-}
-
-func (bridge *clusterBridge) Close() {
-	if err := bridge.ClusterClient.Close(); err != nil {
-		logx.Errorf("Error occurred on close redis cluster: %s", err)
 	}
 }

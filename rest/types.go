@@ -30,5 +30,9 @@ type (
 		middlewares []Middleware
 	}
 
+	Validator = echo.Validator
+
+	Context = echo.Context
+
 	Middleware echo.MiddlewareFunc
 )

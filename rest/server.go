@@ -58,16 +58,20 @@ func NewServer(c rest.RestConf, opts ...RunOption) (*Server, error) {
 }
 
 // 设置验证器
-func WithValidator(validator echo.Validator) RunOption {
+func WithValidator(validator Validator) RunOption {
 	return func(srv *Server) {
 		srv.engine.Validator = validator
 	}
 }
 
-func WithErrorHandler(errHandler func(err error, ctx echo.Context)) RunOption {
+func WithErrorHandler(errHandler func(err error, ctx Context)) RunOption {
 	return func(srv *Server) {
 		srv.engine.HTTPErrorHandler = errHandler
 	}
+}
+
+func (e *Server) NewContext(r *http.Request, w http.ResponseWriter) Context {
+	return e.engine.NewContext(r, w)
 }
 
 func (e *Server) Start() {

@@ -17,16 +17,18 @@ import (
 // 1000m代表100%
 const topCpuUsage = 1000
 
-type engine struct {
-	conf rest.RestConf
-	*echo.Echo
-	// 系统负载
-	shedder load.Shedder
-	// 预警负载 取最高和配置负载平均
-	priorityShedder load.Shedder
-	closers         []io.Closer
-	groups          []Group
-}
+type (
+	engine struct {
+		conf rest.RestConf
+		*echo.Echo
+		// 系统负载
+		shedder load.Shedder
+		// 预警负载 取最高和配置负载平均
+		priorityShedder load.Shedder
+		closers         []io.Closer
+		groups          []Group
+	}
+)
 
 func newEngine(conf rest.RestConf) *engine {
 	srv := &engine{

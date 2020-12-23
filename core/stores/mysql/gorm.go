@@ -13,9 +13,10 @@ var (
 type (
 	SqlOption func()
 
-	DB = gorm.DB
-
-	Config = gorm.Config
+	DB        = gorm.DB
+	Config    = gorm.Config
+	Model     = gorm.Model
+	DeletedAt = gorm.DeletedAt
 )
 
 func NewMysql(datasource string, readSources []string, c *Config) (*DB, error) {

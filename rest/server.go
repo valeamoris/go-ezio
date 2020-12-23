@@ -5,7 +5,6 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 	"github.com/tal-tech/go-zero/core/logx"
-	"github.com/tal-tech/go-zero/rest"
 	"log"
 	"net/http"
 )
@@ -24,7 +23,7 @@ type (
 	}
 )
 
-func MustNewServer(c rest.RestConf, opts ...RunOption) *Server {
+func MustNewServer(c Conf, opts ...RunOption) *Server {
 	engine, err := NewServer(c, opts...)
 	if err != nil {
 		log.Fatal(err)
@@ -33,7 +32,7 @@ func MustNewServer(c rest.RestConf, opts ...RunOption) *Server {
 	return engine
 }
 
-func NewServer(c rest.RestConf, opts ...RunOption) (*Server, error) {
+func NewServer(c Conf, opts ...RunOption) (*Server, error) {
 	if err := c.SetUp(); err != nil {
 		return nil, err
 	}

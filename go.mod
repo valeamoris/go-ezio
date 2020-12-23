@@ -7,6 +7,7 @@ require (
 	github.com/alicebob/miniredis/v2 v2.14.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-redis/redis/v8 v8.4.4
+	github.com/go-sql-driver/mysql v1.5.0
 	github.com/google/uuid v1.1.1
 	github.com/labstack/echo/v4 v4.1.17
 	github.com/labstack/gommon v0.3.0
@@ -19,4 +20,8 @@ require (
 	github.com/uber/jaeger-client-go v2.25.0+incompatible
 	github.com/uber/jaeger-lib v2.4.0+incompatible // indirect
 	github.com/urfave/cli v1.22.5
+	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
+	gorm.io/driver/mysql v1.0.3
+	gorm.io/gorm v1.20.8
+	gorm.io/plugin/dbresolver v1.0.1
 )

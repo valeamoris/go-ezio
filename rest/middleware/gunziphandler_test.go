@@ -12,7 +12,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/tal-tech/go-zero/core/codec"
-	"github.com/tal-tech/go-zero/rest/httpx"
 )
 
 func TestGunzipHandler(t *testing.T) {
@@ -30,7 +29,7 @@ func TestGunzipHandler(t *testing.T) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPost, "http://localhost",
 		bytes.NewReader(codec.Gzip([]byte(message))))
-	req.Header.Set(httpx.ContentEncoding, gzipEncoding)
+	req.Header.Set(echo.HeaderContentEncoding, gzipEncoding)
 	resp := httptest.NewRecorder()
 	ctx := e.NewContext(req, resp)
 	err := handler(ctx)
@@ -70,7 +69,7 @@ func TestGunzipHandler_NoGzipButTelling(t *testing.T) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPost, "http://localhost",
 		strings.NewReader(message))
-	req.Header.Set(httpx.ContentEncoding, gzipEncoding)
+	req.Header.Set(echo.HeaderContentEncoding, gzipEncoding)
 	resp := httptest.NewRecorder()
 	ctx := e.NewContext(req, resp)
 	err := handler(ctx)

@@ -8,7 +8,6 @@ import (
 	"github.com/tal-tech/go-zero/core/load"
 	"github.com/tal-tech/go-zero/core/stat"
 	"github.com/tal-tech/go-zero/core/sysx"
-	"github.com/tal-tech/go-zero/rest"
 	"github.com/valeamoris/go-ezio/rest/middleware"
 	"io"
 	"time"
@@ -19,7 +18,7 @@ const topCpuUsage = 1000
 
 type (
 	engine struct {
-		conf rest.RestConf
+		conf Conf
 		*echo.Echo
 		// 系统负载
 		shedder load.Shedder
@@ -30,7 +29,7 @@ type (
 	}
 )
 
-func newEngine(conf rest.RestConf) *engine {
+func newEngine(conf Conf) *engine {
 	srv := &engine{
 		conf: conf,
 		Echo: echo.New(),

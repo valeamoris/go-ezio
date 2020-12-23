@@ -6,6 +6,10 @@ import (
 	"gorm.io/plugin/dbresolver"
 )
 
+var (
+	ErrRecordNotFound = gorm.ErrRecordNotFound
+)
+
 type (
 	SqlOption func()
 

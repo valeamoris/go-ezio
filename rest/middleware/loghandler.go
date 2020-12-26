@@ -131,11 +131,13 @@ func logBrief(ctx echo.Context, pool *sync.Pool, timer *utils.ElapsedTimer, logs
 		nCtx = context.WithValue(oCtx, tracespec.TracingKey, newEmptyTracer())
 	}
 	duration := timer.Duration()
-	buf.WriteString(fmt.Sprintf("%d - %s - %s - %s - %s",
-		ctx.Response().Status, ctx.Request().RequestURI, ctx.RealIP(), ctx.Request().UserAgent(), timex.ReprOfDuration(duration)))
+	buf.WriteString(fmt.Sprintf("%d - %s - %s - %s - %s - %s",
+		ctx.Response().Status, ctx.Request().Method, ctx.Request().RequestURI, ctx.RealIP(), ctx.Request().UserAgent(),
+		timex.ReprOfDuration(duration)))
 	if duration > slowThreshold {
-		logx.WithContext(nCtx).Slowf("[HTTP] %d - %s - %s - %s - slowcall(%s)",
-			ctx.Response().Status, ctx.Request().RequestURI, ctx.RealIP(), ctx.Request().UserAgent(), timex.ReprOfDuration(duration))
+		logx.WithContext(nCtx).Slowf("[HTTP] %d - %s - %s - %s - %s - slowcall(%s)",
+			ctx.Response().Status, ctx.Request().Method, ctx.Request().RequestURI, ctx.RealIP(), ctx.Request().UserAgent(),
+			timex.ReprOfDuration(duration))
 	}
 
 	ok := isOkResponse(ctx.Response().Status)
@@ -169,11 +171,11 @@ func logDetails(ctx echo.Context, pool *sync.Pool, timer *utils.ElapsedTimer, lo
 		nCtx = context.WithValue(oCtx, tracespec.TracingKey, newEmptyTracer())
 	}
 	duration := timer.Duration()
-	buf.WriteString(fmt.Sprintf("%d - %s - %s\n=> %s\n",
-		ctx.Response().Status, ctx.RealIP(), timex.ReprOfDuration(duration), dumpRequest(ctx.Request())))
+	buf.WriteString(fmt.Sprintf("%d - %s - %s - %s\n=> %s\n",
+		ctx.Response().Status, ctx.Request().Method, ctx.RealIP(), timex.ReprOfDuration(duration), dumpRequest(ctx.Request())))
 	if duration > slowThreshold {
-		logx.WithContext(nCtx).Slowf("[HTTP] %d - %s - slowcall(%s)\n=> %s\n",
-			ctx.Response().Status, ctx.RealIP(), timex.ReprOfDuration(duration), dumpRequest(ctx.Request()))
+		logx.WithContext(nCtx).Slowf("[HTTP] %d - %s - %s - slowcall(%s)\n=> %s\n",
+			ctx.Response().Status, ctx.Request().Method, ctx.RealIP(), timex.ReprOfDuration(duration), dumpRequest(ctx.Request()))
 	}
 
 	ok := isOkResponse(ctx.Response().Status)

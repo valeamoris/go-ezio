@@ -218,9 +218,7 @@ func PrometheusMiddleware() echo.MiddlewareFunc {
 			start := time.Now()
 			reqSz := computeApproximateRequestSize(c.Request())
 
-			if err = next(c); err != nil {
-				c.Error(err)
-			}
+			err = next(c)
 
 			status := strconv.Itoa(c.Response().Status)
 

@@ -266,7 +266,7 @@ func (r *rbroker) Subscribe(topic string, handler broker.Handler, opts ...broker
 		p.err = handler(p)
 
 		// process error
-		if r.opts.ErrorHandler != nil {
+		if p.err != nil && r.opts.ErrorHandler != nil {
 			_ = r.opts.ErrorHandler(p)
 		}
 

@@ -264,6 +264,12 @@ func (r *rbroker) Subscribe(topic string, handler broker.Handler, opts ...broker
 		}
 		p := &publication{d: msg, m: m, t: msg.RoutingKey}
 		p.err = handler(p)
+
+		// process error
+		if r.opts.ErrorHandler != nil {
+			_ = r.opts.ErrorHandler(p)
+		}
+
 		if p.err != nil && ackSuccess && !opt.AutoAck {
 			msg.Ack(false)
 		} else if p.err != nil && !opt.AutoAck {

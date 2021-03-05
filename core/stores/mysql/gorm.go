@@ -21,16 +21,11 @@ type (
 	DBOption func()
 )
 
-func NewMysqlResolver(conn *DB, readSources []string) *dbresolver.DBResolver {
+func NewMysqlResolver(readSources []string) *dbresolver.DBResolver {
 	resolver := dbresolver.Register(dbresolver.Config{
-		Policy: dbresolver.RandomPolicy{},
+		Replicas: reduceReadSource(readSources),
+		Policy:   dbresolver.RandomPolicy{},
 	})
-	// 引入读写分离插件
-	if len(readSources) > 0 {
-		resolver = resolver.Register(dbresolver.Config{
-			Replicas: reduceReadSource(readSources),
-		})
-	}
 	return resolver
 }
 

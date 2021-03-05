@@ -63,6 +63,12 @@ func WithValidator(validator Validator) RunOption {
 	}
 }
 
+func WithRenderer(renderer Renderer) RunOption {
+	return func(srv *Server) {
+		srv.engine.Renderer = renderer
+	}
+}
+
 func WithErrorHandler(errHandler func(err error, ctx Context)) RunOption {
 	return func(srv *Server) {
 		srv.engine.HTTPErrorHandler = errHandler

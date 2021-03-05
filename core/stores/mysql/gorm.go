@@ -3,6 +3,7 @@ package mysql
 import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"gorm.io/plugin/dbresolver"
 )
 
@@ -17,8 +18,13 @@ type (
 	Config    = gorm.Config
 	Model     = gorm.Model
 	DeletedAt = gorm.DeletedAt
+)
 
-	DBOption func()
+const (
+	Silent = logger.Silent
+	Error  = logger.Error
+	Warn   = logger.Warn
+	Info   = logger.Info
 )
 
 func NewMysqlResolver(readSources []string) *dbresolver.DBResolver {

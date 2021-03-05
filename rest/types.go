@@ -36,6 +36,8 @@ type (
 
 	Context = echo.Context
 
+	Renderer = echo.Renderer
+
 	MiddlewareFunc = func(next HandlerFunc) HandlerFunc
 
 	Middleware = MiddlewareFunc

@@ -17,26 +17,33 @@ type (
 	Config    = gorm.Config
 	Model     = gorm.Model
 	DeletedAt = gorm.DeletedAt
+
+	DBOption func()
 )
 
-func NewMysql(datasource string, readSources []string, c *Config) (*DB, error) {
+func NewMysqlResolver(conn *DB, readSources []string) *dbresolver.DBResolver {
+	resolver := dbresolver.Register(dbresolver.Config{
+		Policy: dbresolver.RandomPolicy{},
+	})
+	// 引入读写分离插件
+	if len(readSources) > 0 {
+		resolver = resolver.Register(dbresolver.Config{
+			Replicas: reduceReadSource(readSources),
+		})
+	}
+	return resolver
+}
+
+func NewMysql(datasource string, c *Config) (*DB, error) {
 	conn, err := gorm.Open(mysql.Open(datasource), c)
 	if err != nil {
 		return nil, err
 	}
-	// 引入读写分离插件
-	if len(readSources) > 0 {
-		err = conn.Use(dbresolver.Register(dbresolver.Config{
-			Sources:  []gorm.Dialector{mysql.Open(datasource)},
-			Replicas: reduceReadSource(readSources),
-			Policy:   dbresolver.RandomPolicy{},
-		}))
-		if err != nil {
-			return nil, err
-		}
-	}
 	// 引入breaker插件
-	conn.Use(NewBreakerPlugin())
+	err = conn.Use(NewBreakerPlugin())
+	if err != nil {
+		return nil, err
+	}
 	return conn, nil
 }
 

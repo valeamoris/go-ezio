@@ -63,9 +63,13 @@ func (s *engine) bindGroup(g Group, metrics *stat.Metrics) error {
 	}
 
 	for _, m := range g.middlewares {
-		group.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
-			return echo.HandlerFunc(m(HandlerFunc(next)))
-		})
+		middlewareWrapper := func(m Middleware) echo.MiddlewareFunc {
+			return func(next echo.HandlerFunc) echo.HandlerFunc {
+				return echo.HandlerFunc(m(HandlerFunc(next)))
+			}
+		}
+
+		group.Use(middlewareWrapper(m))
 	}
 
 	for _, route := range g.Routes {

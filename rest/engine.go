@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 	echoMiddleware "github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/bytes"
+	"github.com/tal-tech/go-zero/core/breaker"
 	"github.com/tal-tech/go-zero/core/load"
 	"github.com/tal-tech/go-zero/core/stat"
 	"github.com/tal-tech/go-zero/core/sysx"
@@ -26,6 +27,7 @@ type (
 		priorityShedder load.Shedder
 		closers         []io.Closer
 		groups          []Group
+		rejectHandler   func(promise breaker.Promise, err error)
 	}
 )
 
@@ -88,7 +90,7 @@ func (s *engine) getShedder(priority bool) load.Shedder {
 func (s *engine) bindRoute(g *echo.Group, metrics *stat.Metrics, route Route) {
 	g.Add(route.Method, route.Path, echo.HandlerFunc(route.Handler),
 		// 断路器
-		middleware.BreakerMiddleware(route.Method, route.Path, metrics),
+		middleware.BreakerMiddleware(route.Method, route.Path, metrics, s.rejectHandler),
 	)
 }
 

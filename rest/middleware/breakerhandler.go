@@ -12,7 +12,7 @@ import (
 
 const breakerSeparator = "://"
 
-func BreakerMiddleware(method, path string, metrics *stat.Metrics) echo.MiddlewareFunc {
+func BreakerMiddleware(method, path string, metrics *stat.Metrics, rejectHandler func(promise breaker.Promise, err error)) echo.MiddlewareFunc {
 	brk := breaker.NewBreaker(
 		breaker.WithName(strings.Join([]string{method, path}, breakerSeparator)),
 	)
@@ -35,7 +35,7 @@ func BreakerMiddleware(method, path string, metrics *stat.Metrics) echo.Middlewa
 			}()
 			err = next(ctx)
 			if err != nil {
-				promise.Reject(err.Error())
+				rejectHandler(promise, err)
 			}
 			return err
 		}

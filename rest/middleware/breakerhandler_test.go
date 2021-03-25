@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
+	"github.com/tal-tech/go-zero/core/breaker"
 	"github.com/tal-tech/go-zero/core/logx"
 	"github.com/tal-tech/go-zero/core/stat"
 	"net/http"
@@ -16,9 +17,13 @@ func init() {
 	stat.SetReporter(nil)
 }
 
+var defaultRejectHandler = func(promise breaker.Promise, err error) {
+	promise.Reject(err.Error())
+}
+
 func TestBreakerMiddlewareAccept(t *testing.T) {
 	metrics := stat.NewMetrics("unit-test")
-	breakerHandler := BreakerMiddleware(http.MethodGet, "/", metrics)
+	breakerHandler := BreakerMiddleware(http.MethodGet, "/", metrics, defaultRejectHandler)
 	handler := breakerHandler(func(ctx echo.Context) error {
 		ctx.Response().Header().Set("X-Test", "test")
 		return ctx.String(http.StatusOK, "content")
@@ -37,7 +42,7 @@ func TestBreakerMiddlewareAccept(t *testing.T) {
 
 func TestBreakerMiddlewareFail(t *testing.T) {
 	metrics := stat.NewMetrics("unit-test")
-	breakerHandler := BreakerMiddleware(http.MethodGet, "/", metrics)
+	breakerHandler := BreakerMiddleware(http.MethodGet, "/", metrics, defaultRejectHandler)
 	handler := breakerHandler(func(ctx echo.Context) error {
 		ctx.Response().WriteHeader(http.StatusBadGateway)
 		return nil
@@ -54,7 +59,7 @@ func TestBreakerMiddlewareFail(t *testing.T) {
 
 func TestBreakerMiddleware_4XX(t *testing.T) {
 	metrics := stat.NewMetrics("unit-test")
-	breakerHandler := BreakerMiddleware(http.MethodGet, "/", metrics)
+	breakerHandler := BreakerMiddleware(http.MethodGet, "/", metrics, defaultRejectHandler)
 	handler := breakerHandler(func(ctx echo.Context) error {
 		ctx.Response().WriteHeader(http.StatusBadRequest)
 		return nil
@@ -87,7 +92,7 @@ func TestBreakerMiddleware_4XX(t *testing.T) {
 
 func TestBreakerMiddlewareReject(t *testing.T) {
 	metrics := stat.NewMetrics("unit-test")
-	breakerHandler := BreakerMiddleware(http.MethodGet, "/", metrics)
+	breakerHandler := BreakerMiddleware(http.MethodGet, "/", metrics, defaultRejectHandler)
 	handler := breakerHandler(func(ctx echo.Context) error {
 		ctx.Response().WriteHeader(http.StatusInternalServerError)
 		return nil

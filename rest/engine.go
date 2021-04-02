@@ -59,6 +59,11 @@ func (s *engine) bindGroup(g Group, metrics *stat.Metrics) error {
 		group.Use(middleware.SheddingMiddleware(s.getShedder(g.priority), metrics))
 	}
 
+	if !g.timeoutDisabled {
+		// 超时
+		group.Use(middleware.TimeoutMiddleware(time.Duration(s.conf.Timeout) * time.Millisecond))
+	}
+
 	// JWT的认证中间件
 	if g.jwt.enabled {
 		conf := echoMiddleware.DefaultJWTConfig
@@ -91,7 +96,7 @@ func (s *engine) getShedder(priority bool) load.Shedder {
 }
 
 func (s *engine) bindRoute(g *echo.Group, metrics *stat.Metrics, route Route) {
-	g.Add(route.Method, route.Path, echo.HandlerFunc(route.Handler))// todo 断路器逻辑还有点问题，下次再优化
+	g.Add(route.Method, route.Path, echo.HandlerFunc(route.Handler)) // todo 断路器逻辑还有点问题，下次再优化
 	// middleware.BreakerMiddleware(route.Method, route.Path, metrics, s.rejectHandler),
 
 }
@@ -108,8 +113,6 @@ func (s *engine) bindRoutes() error {
 	s.Echo.Use(s.getLogMiddleware())
 	// 单连接最大连接数
 	s.Echo.Use(middleware.MaxConnMiddleware(s.conf.MaxConns))
-	// 超时
-	s.Echo.Use(middleware.TimeoutMiddleware(time.Duration(s.conf.Timeout) * time.Millisecond))
 	// recover恢复
 	s.Echo.Use(middleware.RecoverMiddleware)
 	// 数据统计

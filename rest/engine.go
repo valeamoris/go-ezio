@@ -53,8 +53,11 @@ func (s *engine) bindGroup(g Group, metrics *stat.Metrics) error {
 	s.signatureVerifier()
 
 	group := s.Group(g.Prefix)
-	// 自定义负载保护
-	group.Use(middleware.SheddingMiddleware(s.getShedder(g.priority), metrics))
+
+	if g.shedding {
+		// 自定义负载保护
+		group.Use(middleware.SheddingMiddleware(s.getShedder(g.priority), metrics))
+	}
 
 	// JWT的认证中间件
 	if g.jwt.enabled {
@@ -88,10 +91,9 @@ func (s *engine) getShedder(priority bool) load.Shedder {
 }
 
 func (s *engine) bindRoute(g *echo.Group, metrics *stat.Metrics, route Route) {
-	g.Add(route.Method, route.Path, echo.HandlerFunc(route.Handler),
-		// 断路器
-		middleware.BreakerMiddleware(route.Method, route.Path, metrics, s.rejectHandler),
-	)
+	g.Add(route.Method, route.Path, echo.HandlerFunc(route.Handler))// todo 断路器逻辑还有点问题，下次再优化
+	// middleware.BreakerMiddleware(route.Method, route.Path, metrics, s.rejectHandler),
+
 }
 
 func (s *engine) bindRoutes() error {

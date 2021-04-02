@@ -27,7 +27,10 @@ type (
 		Prefix   string
 		priority bool
 		jwt      jwtSetting
-		Routes   []Route
+		// should open shedding
+		shedding      bool
+		enableBreaker bool
+		Routes        []Route
 		echo.Group
 		middlewares []Middleware
 	}

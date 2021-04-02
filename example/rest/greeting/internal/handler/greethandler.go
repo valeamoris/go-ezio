@@ -1,15 +1,15 @@
 package handler
 
 import (
-	"github.com/labstack/echo/v4"
 	"github.com/valeamoris/go-ezio/example/rest/greeting/internal/logic"
 	"github.com/valeamoris/go-ezio/example/rest/greeting/internal/svc"
 	"github.com/valeamoris/go-ezio/example/rest/greeting/internal/types"
+	"github.com/valeamoris/go-ezio/rest"
 	"net/http"
 )
 
-func GreetHandler(svcCtx *svc.ServiceContext) echo.HandlerFunc {
-	return func(ctx echo.Context) error {
+func GreetHandler(svcCtx *svc.ServiceContext) rest.HandlerFunc {
+	return func(ctx rest.Context) error {
 		req := new(types.Request)
 		if err := ctx.Bind(req); err != nil {
 			return err

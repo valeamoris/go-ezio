@@ -151,3 +151,9 @@ func WithPriority() RouteOption {
 		r.priority = true
 	}
 }
+
+func WithShedding() RouteOption {
+	return func(r *Group) {
+		r.shedding = true
+	}
+}

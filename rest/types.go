@@ -30,7 +30,9 @@ type (
 		// should open shedding
 		shedding      bool
 		enableBreaker bool
-		Routes        []Route
+		// should enable timeout middleware
+		timeoutDisabled bool
+		Routes          []Route
 		echo.Group
 		middlewares []Middleware
 	}

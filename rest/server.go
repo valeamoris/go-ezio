@@ -157,3 +157,9 @@ func WithShedding() RouteOption {
 		r.shedding = true
 	}
 }
+
+func WithTimeoutDisabled() RouteOption {
+	return func(r *Group) {
+		r.timeoutDisabled = true
+	}
+}

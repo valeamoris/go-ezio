@@ -163,3 +163,11 @@ func WithTimeoutDisabled() RouteOption {
 		r.timeoutDisabled = true
 	}
 }
+
+func WithStatic(prefix, root string) RouteOption {
+	return func(r *Group) {
+		r.static.enabled = true
+		r.static.prefix = prefix
+		r.static.root = root
+	}
+}

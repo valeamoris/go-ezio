@@ -72,6 +72,10 @@ func (s *engine) bindGroup(g Group, metrics *stat.Metrics) error {
 		group.Use(echoMiddleware.JWTWithConfig(conf))
 	}
 
+	if g.static.enabled {
+		group.Static(g.static.prefix, g.static.root)
+	}
+
 	for _, m := range g.middlewares {
 		middlewareWrapper := func(m Middleware) echo.MiddlewareFunc {
 			return func(next echo.HandlerFunc) echo.HandlerFunc {

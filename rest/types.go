@@ -27,6 +27,7 @@ type (
 		Prefix   string
 		priority bool
 		jwt      jwtSetting
+		static   staticSetting
 		// should open shedding
 		shedding      bool
 		enableBreaker bool
@@ -46,4 +47,10 @@ type (
 	MiddlewareFunc = func(next HandlerFunc) HandlerFunc
 
 	Middleware = MiddlewareFunc
+
+	staticSetting struct {
+		enabled bool
+		prefix  string
+		root    string
+	}
 )

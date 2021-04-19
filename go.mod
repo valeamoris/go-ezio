@@ -21,6 +21,6 @@ require (
 	github.com/uber/jaeger-lib v2.4.0+incompatible // indirect
 	github.com/urfave/cli v1.22.5
 	gorm.io/driver/mysql v1.0.3
-	gorm.io/gorm v1.20.8
+	gorm.io/gorm v1.21.8
 	gorm.io/plugin/dbresolver v1.0.1
 )

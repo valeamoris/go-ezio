@@ -8,7 +8,7 @@ import (
 	"time"
 
 	red "github.com/go-redis/redis/v8"
-	"github.com/tal-tech/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
 // redis分布式锁

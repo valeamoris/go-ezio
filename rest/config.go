@@ -1,7 +1,7 @@
 package rest
 
 import (
-	"github.com/tal-tech/go-zero/core/service"
+	"github.com/zeromicro/go-zero/core/service"
 	"time"
 )
 

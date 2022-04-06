@@ -1,11 +1,11 @@
 package redis
 
 import (
-	"github.com/tal-tech/go-zero/core/breaker"
+	"github.com/zeromicro/go-zero/core/breaker"
 	"io"
 
 	red "github.com/go-redis/redis/v8"
-	"github.com/tal-tech/go-zero/core/syncx"
+	"github.com/zeromicro/go-zero/core/syncx"
 )
 
 var clusterManager = syncx.NewResourceManager()

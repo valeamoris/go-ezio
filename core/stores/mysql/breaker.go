@@ -2,7 +2,7 @@ package mysql
 
 import (
 	"github.com/go-sql-driver/mysql"
-	"github.com/tal-tech/go-zero/core/breaker"
+	"github.com/zeromicro/go-zero/core/breaker"
 	"gorm.io/gorm"
 )
 

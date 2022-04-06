@@ -15,7 +15,6 @@ require (
 	github.com/prometheus/client_golang v1.11.0
 	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/testify v1.7.0
-	github.com/tal-tech/go-zero v1.1.0
 	github.com/uber/jaeger-client-go v2.25.0+incompatible
 	github.com/uber/jaeger-lib v2.4.0+incompatible // indirect
 	github.com/zeromicro/go-zero v1.3.2

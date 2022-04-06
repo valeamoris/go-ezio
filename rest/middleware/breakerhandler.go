@@ -3,9 +3,9 @@ package middleware
 import (
 	"fmt"
 	"github.com/labstack/echo/v4"
-	"github.com/tal-tech/go-zero/core/breaker"
-	"github.com/tal-tech/go-zero/core/logx"
-	"github.com/tal-tech/go-zero/core/stat"
+	"github.com/zeromicro/go-zero/core/breaker"
+	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/stat"
 	"net/http"
 	"strings"
 )

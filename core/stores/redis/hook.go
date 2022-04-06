@@ -2,14 +2,14 @@ package redis
 
 import (
 	"context"
-	"github.com/tal-tech/go-zero/core/breaker"
+	"github.com/zeromicro/go-zero/core/breaker"
 	"strings"
 	"time"
 
 	red "github.com/go-redis/redis/v8"
-	"github.com/tal-tech/go-zero/core/logx"
-	"github.com/tal-tech/go-zero/core/mapping"
-	"github.com/tal-tech/go-zero/core/timex"
+	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/mapping"
+	"github.com/zeromicro/go-zero/core/timex"
 )
 
 const (
